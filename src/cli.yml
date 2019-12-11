@@ -1,0 +1,9 @@
+name: Timeit
+version: 0.1.0
+author: Tom McKernan <tmeaglei@gmail.com>
+about: A timer that times the next command as its arguments
+args:
+  - COMMAND:
+      help: The command to execute
+      required: true
+      multiple: true
