@@ -1,13 +1,15 @@
 #[macro_use]
 extern crate clap;
 
-use clap::App;
+use clap::{App, AppSettings};
 use std::process::{Command, Stdio};
 use std::time::SystemTime;
 
 fn main() {
     let yml = load_yaml!("cli.yml");
-    let matches = App::from_yaml(yml).get_matches();
+    let matches = App::from_yaml(yml)
+        .setting(AppSettings::TrailingVarArg)
+        .get_matches();
 
     let command: Vec<_> = matches.values_of("COMMAND").unwrap().collect();
 
