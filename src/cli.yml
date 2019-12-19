@@ -1,8 +1,19 @@
 name: Timeit
-version: 0.2.0
+version: 0.3.0
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A timer that times the next command as its arguments
 args:
+  - times:
+      short: t
+      long: times
+      value_name: INT
+      help: The number of times to run the command
+      takes_value: true
+  - disable-output:
+      short: d
+      long: disable-output
+      help: disables the output of the command
+      takes_value: false
   - COMMAND:
       help: The command to execute
       required: true
