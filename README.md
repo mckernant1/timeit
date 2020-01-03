@@ -15,7 +15,7 @@ brew install timeit
 
 Disables the output of the command
 
---times (-t) <INT>
+--times (-t) \<INT\>
 
 Runs the command the command the specified amount of times. 
 Prints all results in order at the end of any output
