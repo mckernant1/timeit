@@ -2,20 +2,22 @@
 extern crate clap;
 
 use clap::{App, AppSettings};
-use std::process::{Command, Stdio, exit};
+use std::process::{Command, Stdio, exit, Child};
 use std::time::SystemTime;
 
 fn main() {
     let yml = load_yaml!("cli.yml");
-    let matches = App::from_yaml(yml)
-        .setting(AppSettings::TrailingVarArg)
-        .get_matches();
+    let mut app = App::from_yaml(yml);
+    app = app.setting(AppSettings::TrailingVarArg);
+    let matches = app.get_matches();
 
-    let command: Vec<_> = matches.values_of("COMMAND").unwrap().collect();
+    let cmd: Vec<&str> = matches.values_of("COMMAND").unwrap().collect::<Vec<&str>>();
     let disable_output = matches.is_present("disable-output");
+    let parallel = matches.is_present("parallel");
+    let continue_on_failure = matches.is_present("continue-on-failure");
 
     let num_times_res = matches
-        .value_of("times")
+        .value_of("number-of-times-to-run")
         .unwrap_or("1")
         .parse::<i32>();
     let num_times = match num_times_res {
@@ -26,14 +28,37 @@ fn main() {
         }
     };
 
+    let mut children: Vec<(Child, SystemTime)> = vec![];
     let mut times_vec: Vec<u128> = vec![];
+    let command = cmd.to_owned();
 
     for _ in 0..num_times {
-        let start_time = SystemTime::now();
-        run_command(command.clone(), disable_output);
-        match start_time.elapsed() {
+        if parallel {
+            let t = run_command(command.to_owned(), disable_output.to_owned());
+            children.push((t, SystemTime::now()));
+        } else {
+            let start_time = SystemTime::now();
+            let exit_status = run_command(command.to_owned(), disable_output.to_owned())
+                .wait().unwrap();
+
+            if !exit_status.success() && !continue_on_failure {
+                break;
+            }
+
+            match start_time.elapsed() {
+                Ok(time) => {
+                    times_vec.push(time.as_millis())
+                }
+                Err(e) => eprintln!("{:?}", e)
+            }
+        }
+    }
+
+    for (mut child, time) in children {
+        child.wait().unwrap();
+        match time.elapsed() {
             Ok(time) => {
-                times_vec.push(time.as_millis())
+                println!("{}", time.as_millis())
             }
             Err(e) => eprintln!("{:?}", e)
         }
@@ -44,9 +69,8 @@ fn main() {
     }
 }
 
-
-fn run_command(command: Vec<&str>, disable_output: bool) {
-    match Command::new(command[0])
+fn run_command(command: Vec<&str>, disable_output: bool) -> Child {
+    return match Command::new(command[0])
         .args(&command[1..])
         .stdin(if disable_output {
             Stdio::null()
@@ -58,11 +82,10 @@ fn run_command(command: Vec<&str>, disable_output: bool) {
             Stdio::null()
         } else { Stdio::inherit() })
         .spawn() {
-        Ok(mut child) => {
-            child.wait().unwrap();
-        }
+        Ok(child) => child,
         Err(_) => {
-            eprintln!("This command does not exist.")
+            eprintln!("This command does not exist.");
+            exit(1);
         }
     }
 }

@@ -15,11 +15,19 @@ brew install timeit
 
 Disables the output of the command
 
---times (-t) \<INT\>
+--num-of-times (-n) \<INT\>
 
 Runs the command the command the specified amount of times. 
 Prints all results in order at the end of any output
 
+--continue-on-failure (-c)
+
+By default we stop the run if an iteration fails. You can disable this by 
+adding this flag
+
+--parallel (-p)
+
+Runs the jobs in parallel. Starts one thread per number of times specified
 
 ## Example usage
 ```bash

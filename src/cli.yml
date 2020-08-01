@@ -3,12 +3,24 @@ version: 0.3.0
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A timer that times the next command as its arguments
 args:
-  - times:
-      short: t
-      long: times
+  - number-of-times-to-run:
+      short: n
+      long: num-of-times
       value_name: INT
       help: The number of times to run the command
       takes_value: true
+      required: true
+  - continue-on-failure:
+      short: c
+      long: continue-on-failure
+      help: continues to the next run if the command fails
+      conflicts_with: parallel
+      takes_value: false
+  - parallel:
+      short: p
+      long: parallel
+      help: will run the commands in parallel. Starts 1 thread per number of times requested to run
+      takes_value: false
   - disable-output:
       short: d
       long: disable-output
