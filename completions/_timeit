@@ -1,0 +1,43 @@
+#compdef timeit
+
+autoload -U is-at-least
+
+_timeit() {
+    typeset -A opt_args
+    typeset -a _arguments_options
+    local ret=1
+
+    if is-at-least 5.2; then
+        _arguments_options=(-s -S -C)
+    else
+        _arguments_options=(-s -C)
+    fi
+
+    local context curcontext="$curcontext" state line
+    _arguments "${_arguments_options[@]}" \
+'-n+[The number of times to run the command]' \
+'--num-of-times=[The number of times to run the command]' \
+'(-p --parallel)-c[continues to the next run if the command fails]' \
+'(-p --parallel)--continue-on-failure[continues to the next run if the command fails]' \
+'-p[will run the commands in parallel. Starts 1 thread per number of times requested to run]' \
+'--parallel[will run the commands in parallel. Starts 1 thread per number of times requested to run]' \
+'-d[disables the output of the command]' \
+'--disable-output[disables the output of the command]' \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':COMMAND -- The command to execute:_files' \
+&& ret=0
+    
+}
+
+(( $+functions[_timeit_commands] )) ||
+_timeit_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'timeit commands' commands "$@"
+}
+
+_timeit "$@"

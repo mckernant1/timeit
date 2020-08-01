@@ -1,5 +1,5 @@
 name: Timeit
-version: 0.3.0
+version: 0.4.1
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A timer that times the next command as its arguments
 args:
