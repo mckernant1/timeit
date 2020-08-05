@@ -1,6 +1,6 @@
 [package]
 name = "timeit"
-version = "0.4.1"
+version = "0.4.2"
 authors = ["Tom McKernan <tmeaglei@gmail.com>"]
 edition = "2018"
 

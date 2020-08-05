@@ -1,5 +1,5 @@
 name: Timeit
-version: 0.4.1
+version: 0.4.2
 author: Tom McKernan <tmeaglei@gmail.com>
 about: A timer that times the next command as its arguments
 args:
@@ -19,12 +19,13 @@ args:
   - parallel:
       short: p
       long: parallel
-      help: will run the commands in parallel. Starts 1 thread per number of times requested to run
+      help: will run the commands in parallel. Starts 1 thread per number of times requested to run. Disables output automatically
       takes_value: false
   - disable-output:
       short: d
       long: disable-output
       help: disables the output of the command
+      conflicts_with: parallel
       takes_value: false
   - COMMAND:
       help: The command to execute

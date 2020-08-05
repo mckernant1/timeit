@@ -139,7 +139,7 @@ dependencies = [
 
 [[package]]
 name = "timeit"
-version = "0.4.1"
+version = "0.4.2"
 dependencies = [
  "clap 2.33.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "rusty-hook 0.11.2 (registry+https://github.com/rust-lang/crates.io-index)",

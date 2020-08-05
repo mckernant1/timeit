@@ -34,7 +34,7 @@ fn main() {
 
     for _ in 0..num_times {
         if parallel {
-            let t = run_command(command.to_owned(), disable_output.to_owned());
+            let t = run_command(command.to_owned(), true);
             children.push((t, SystemTime::now()));
         } else {
             let start_time = SystemTime::now();
