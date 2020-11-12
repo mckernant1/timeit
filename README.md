@@ -5,7 +5,7 @@ It will print the time in milliseconds after the process exits
 
 ## To Install 
 ```bash
-brew tap mckernant1/tools
+brew tap mckernant1/tap
 brew install timeit
 ```
 
