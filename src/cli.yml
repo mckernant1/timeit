@@ -1,7 +1,7 @@
 name: Timeit
-version: 0.4.2
+version: 0.4.3
 author: Tom McKernan <tmeaglei@gmail.com>
-about: A timer that times the next command as its arguments
+about: A command line timer
 args:
   - number-of-times-to-run:
       short: n
@@ -9,7 +9,6 @@ args:
       value_name: INT
       help: The number of times to run the command
       takes_value: true
-      required: true
   - continue-on-failure:
       short: c
       long: continue-on-failure

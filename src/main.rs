@@ -54,6 +54,7 @@ fn main() {
         }
     }
 
+    // Print parallel times
     for (mut child, time) in children {
         child.wait().unwrap();
         match time.elapsed() {
@@ -64,6 +65,7 @@ fn main() {
         }
     }
 
+    // Print consecutive times
     for elapsed in times_vec {
         println!("{}", elapsed);
     }
